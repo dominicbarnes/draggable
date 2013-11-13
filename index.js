@@ -97,7 +97,7 @@ Draggable.prototype.onmousemove = function(e){
   }
 
   // move draggable.
-  translate(this.el, x, y);
+  this.move(x, y);
 
   // all done.
   this.emit('drag');
@@ -157,11 +157,23 @@ Draggable.prototype.containment = function(el){
 
 /**
  * Set a handle.
- * @param  {Element} el 
- * @return {Draggable}    
+ * @param  {Element} el
+ * @return {Draggable}
  */
 
 Draggable.prototype.handle = function(el){
   this._handle = el;
   return this;
+};
+
+
+/**
+ * Move to an arbitrary place.
+ * @param {Number} x
+ * @param {Number} y
+ * @return {Draggable}
+ */
+
+Draggable.prototype.move = function(x, y){
+  translate(this.el, x || 0, y || 0);
 };
