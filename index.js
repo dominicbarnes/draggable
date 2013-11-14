@@ -28,6 +28,7 @@ function Draggable(el){
   this._xAxis = true;
   this._yAxis = true;
   this.el = el;
+  this.classes = classes(el);
 }
 
 /**
@@ -58,6 +59,7 @@ Draggable.prototype.build = function(){
  */
 
 Draggable.prototype.onmousedown = function(e){
+  if (e.button !== 0) return; // do not process right-click
   e.preventDefault();
   if (e.touches) e = e.touches[0];
   var rect = this.rect = this.el.getBoundingClientRect();
@@ -65,7 +67,7 @@ Draggable.prototype.onmousedown = function(e){
   this.oy = rect.top - this.el.offsetTop;
   this.x = e.pageX - rect.left;
   this.y = e.pageY - rect.top;
-  classes(this.el).add('dragging');
+  this.classes.add('dragging');
   this.emit('start');
 };
 
@@ -74,6 +76,7 @@ Draggable.prototype.onmousedown = function(e){
  */
 
 Draggable.prototype.onmousemove = function(e){
+  if (!this.classes.has("dragging")) return;
   if (e.touches) e = e.touches[0];
   var styles = this.el.style
     , x = this._xAxis ? e.pageX - this.x : this.ox
@@ -108,7 +111,8 @@ Draggable.prototype.onmousemove = function(e){
  */
 
 Draggable.prototype.onmouseup = function(e){
-  classes(this.el).remove('dragging');
+  if (!this.classes.has("dragging")) return;
+  this.classes.remove('dragging');
   this.emit('end');
 };
 
@@ -126,7 +130,7 @@ Draggable.prototype.destroy = function(){
 
 /**
  * Disable x-axis movement.
- * @return {Draggable} 
+ * @return {Draggable}
  */
 
 Draggable.prototype.disableXAxis = function(){
@@ -146,8 +150,8 @@ Draggable.prototype.disableYAxis = function(){
 
 /**
  * Set a containment element.
- * @param  {Element} el 
- * @return {Draggable}    
+ * @param  {Element} el
+ * @return {Draggable}
  */
 
 Draggable.prototype.containment = function(el){
