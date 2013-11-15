@@ -13,9 +13,7 @@ var emitter = require('emitter')
  * export `Draggable`.
  */
 
-module.exports = function(el){
-  return new Draggable(el);
-};
+module.exports = Draggable;
 
 /**
  * initialize new `Draggable`.
@@ -25,6 +23,10 @@ module.exports = function(el){
  */
 
 function Draggable(el){
+  if (!(this instanceof Draggable)) {
+    return new Draggable(el);
+  }
+
   this._xAxis = true;
   this._yAxis = true;
   this.el = el;
