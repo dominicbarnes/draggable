@@ -179,5 +179,7 @@ Draggable.prototype.handle = function(el){
  */
 
 Draggable.prototype.move = function(x, y){
-  translate(this.el, x || 0, y || 0);
+  this.cx = x || 0;
+  this.cy = y || 0;
+  translate(this.el, this.cx, this.cy);
 };
